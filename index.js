@@ -16,9 +16,9 @@ request(url, function (error, response, body) {
 	  
 	  const start = "2019-04-01T00:00:00.000Z";
 	  const end = "2019-04-14T00:00:00.000Z";
-	  console.log('\nGiven dates stat:' );
-	  console.log('start date: ', start );
-	  console.log('end date: ', end );	  
+	  console.log('\nGiven dates range stat:' );
+	  console.log('Start date: ', start );
+	  console.log('End date: ', end );	  
 	  console.log( processStatistics(new Date(start), new Date(end) ));	  
   } else {
 	  console.log('Statistic file is empty.');
@@ -27,7 +27,7 @@ request(url, function (error, response, body) {
 
 
 function processStatistics(start, end){
-	var countersByWebsite =[];
+	let countersByWebsite =[];
 	for(let item of stat){
 		if (start && end){			
 			let item_date = new Date(item['date']); 
