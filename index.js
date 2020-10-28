@@ -1,16 +1,5 @@
 const request = require('request');
-var stat;
-const d = new Date(2019, 3, 1);
-console.log(d);
-console.log('month:', d.getMonth());
-console.log('day:', d.getDay());
-
-const d2 = new Date("2019-04-01T00:00:00.000Z");
-const d3 = new Date("2019-04-01T00:00:00.000Z");
-console.log('d2: ', d2);
-console.log('d3: ', d3);
-console.log(d3 >= d2);
-//process.exit();
+var stat; 
 const url='https://bitbucket.org/!api/2.0/snippets/tawkto/aA8zqE/4f62624a75da6d1b8dd7f70e53af8d36a1603910/files/webstats.json'; 
 request(url, function (error, response, body) {
   if (error) {
@@ -21,29 +10,42 @@ request(url, function (error, response, body) {
 	  console.log('statusCode:', response && response.statusCode);  
 	  process.exit();
   }
-  stat = JSON.parse(body);
-  //console.log('body as json:', stat ); // Print stat 
-  if (stat){
-	  // start processing
-	  console.log( processStatistics());	  
-  }  
+  stat = JSON.parse(body); 
+  if (stat){ 
+	  console.log('All dates stat:\n', processStatistics());
+	  
+	  const start = "2019-04-01T00:00:00.000Z";
+	  const end = "2019-04-14T00:00:00.000Z";
+	  console.log('\nGiven dates stat:' );
+	  console.log('start date: ', start );
+	  console.log('end date: ', end );	  
+	  console.log( processStatistics(new Date(start), new Date(end) ));	  
+  } else {
+	  console.log('Statistic file is empty.');
+  } 
 });
 
 
 function processStatistics(start, end){
 	var countersByWebsite =[];
 	for(let item of stat){
-		//console.log(item['websiteId']);
-		if (item['websiteId'] in countersByWebsite){
-			countersByWebsite[item['websiteId']]['chats'] += item['chats'];
-			countersByWebsite[item['websiteId']]['missedChats'] += item['missedChats'];
+		if (start && end){			
+			let item_date = new Date(item['date']); 
+			if (item_date >= start && end >= item_date) {
+				//console.log('Process for that date: ', item_date);
+				processItem(item, countersByWebsite);
+			}			
 		} else {
-			//countersByWebsite[item['websiteId']] = { };
-			countersByWebsite[item['websiteId']] = {'chats' : item['chats'], 'missedChats' : item['missedChats'] , 'websiteId':  item['websiteId'] };
-		}		 
-	}
-	/* for (item in countersByWebsite){
-		countersByWebsite[]= key;
-	}  */
+			processItem(item, countersByWebsite);
+		}		
+	} 
 	return Object.values(countersByWebsite); 
+}
+function processItem(item, countersByWebsite){
+	if (item['websiteId'] in countersByWebsite){
+		countersByWebsite[item['websiteId']]['chats'] += item['chats'];
+		countersByWebsite[item['websiteId']]['missedChats'] += item['missedChats'];
+	} else { 
+		countersByWebsite[item['websiteId']] = {'chats' : item['chats'], 'missedChats' : item['missedChats'] , 'websiteId':  item['websiteId'] };
+	}
 }
