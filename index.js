@@ -46,6 +46,10 @@ function processItem(item, countersByWebsite){
 		countersByWebsite[item['websiteId']]['chats'] += item['chats'];
 		countersByWebsite[item['websiteId']]['missedChats'] += item['missedChats'];
 	} else { 
-		countersByWebsite[item['websiteId']] = {'chats' : item['chats'], 'missedChats' : item['missedChats'] , 'websiteId':  item['websiteId'] };
+		countersByWebsite[item['websiteId']] = { 
+		   'chats' : item['chats'], 
+		   'missedChats' : item['missedChats'] , 
+		   'websiteId':  item['websiteId'] 
+		};
 	}
 }
