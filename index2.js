@@ -37,8 +37,7 @@ function main(url) {
 	  if (response.statusCode != '200') {
 		console.log('statusCode:', response && response.statusCode);  
 		process.exit();
-	  }  
-	  if (body){ 
+	  }   
 		let res = processStatistics(body);
 		console.log('All dates stat:\n', res);
 		// write to file 
@@ -48,16 +47,13 @@ function main(url) {
 		  if (err) return console.error("Unable to save json to file", err);
 		  console.log("Data successfully saved to file in json");
 		});
-		
+
 		const start = "2019-04-01T00:00:00.000Z";
 		const end = "2019-04-14T00:00:00.000Z";
 		console.log('\nGiven dates range stat:' );
 		console.log('Start date: ', start );
 		console.log('End date: ', end );    
 		console.log( processStatistics(body, new Date(start), new Date(end) ));    
-	  } else {
-		console.log('Statistic file is empty.');
-	  } 
 	});
 }
 main(url);
