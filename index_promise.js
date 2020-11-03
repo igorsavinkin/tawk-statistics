@@ -30,7 +30,7 @@ function processItem(item, countersByWebsite){
 }
 // self executing function
 (() => {  
-	let promise = new Promise(function(resolve, reject){
+	new Promise(function(resolve, reject){
 		request(url, {json : true}, function (error, response, body) {// fetch
 		if (error) { 
 			  reject(error);
@@ -42,9 +42,7 @@ function processItem(item, countersByWebsite){
 		}
 		 
 		});
-	}); 
-	promise
-		.then( (result) => { console.log(result) })
+	})	.then( (result) => { console.log(result) })
 		.catch( (errorMsg) => { 
 			console.log('Promise got rejected.');
 			console.log(errorMsg); 
